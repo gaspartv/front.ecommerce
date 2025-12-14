@@ -32,7 +32,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Provider>
-          <Flex direction="column" minH="100vh">
+          <Flex direction="column" minH="100vh" bg="bg" color="fg">
             <Navbar />
             <Container as="main" maxW="100%" px={0} py={8} flex={1}>
               {children}

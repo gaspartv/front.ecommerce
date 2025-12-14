@@ -45,10 +45,10 @@ export function Paginate(props: PaginateProps) {
   return (
     <Flex justify="space-between" align="center" gap={4} flexWrap="wrap">
       <Flex align="center" gap={2}>
-        <Text fontSize="sm" color="fg.muted">
+        <Text fontSize="sm" color="fg.muted" cursor="default">
           Itens por página:
         </Text>
-        <NativeSelect.Root size="sm" width="80px">
+        <NativeSelect.Root size="sm" width="80px" cursor="pointer">
           <NativeSelect.Field
             value={props.pageSize}
             onChange={handleLimitChange}
@@ -94,7 +94,7 @@ export function Paginate(props: PaginateProps) {
         </ButtonGroup>
       </Pagination.Root>
 
-      <Text fontSize="sm" color="fg.muted">
+      <Text fontSize="sm" color="fg.muted" cursor="default">
         Total: {props.total} {props.total === 1 ? "item" : "itens"}
       </Text>
     </Flex>
