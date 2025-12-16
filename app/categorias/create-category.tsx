@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "@chakra-ui/react";
-import { useState } from "react";
-import { Fragment } from "react/jsx-runtime";
+import { Fragment, useState } from "react";
 import ModalCreateCategory from "./modal-create-category";
 
 export default function CreateCategory({

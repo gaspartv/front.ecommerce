@@ -15,21 +15,30 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const categorySchema = z.object({
-  name: z.string().min(3, "Nome obrigatório"),
-  description: z.string().min(5, "Descrição obrigatória"),
+  name: z.string().min(3, "Nome obrigatório").max(255, "Nome muito longo"),
+  description: z
+    .string()
+    .min(5, "Descrição obrigatória")
+    .max(510, "Descrição muito longa"),
 });
 
 type CategoryFormData = z.infer<typeof categorySchema>;
 
-interface ModalCreateCategoryProps {
+interface ModalEditCategoryProps {
   open: boolean;
   onOpenChange: (details: { open: boolean }) => void;
+  categoryId: string;
+  name: string;
+  description: string;
 }
 
-export default function ModalCreateCategory({
+export default function ModalEditCategory({
   open,
   onOpenChange,
-}: ModalCreateCategoryProps) {
+  categoryId,
+  name,
+  description,
+}: ModalEditCategoryProps) {
   const router = useRouter();
   const {
     register,
@@ -37,15 +46,19 @@ export default function ModalCreateCategory({
     formState: { errors, isSubmitting },
     reset,
   } = useForm<CategoryFormData>({
+    defaultValues: {
+      name,
+      description,
+    },
     resolver: zodResolver(categorySchema),
   });
 
   async function onSubmit(data: CategoryFormData) {
     try {
       const rest = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "categories/create",
+        `${process.env.NEXT_PUBLIC_API_URL}categories/edit?id=${categoryId}`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -55,8 +68,8 @@ export default function ModalCreateCategory({
 
       if (!rest.ok) {
         toaster.create({
-          title: "Erro ao criar categoria",
-          description: "Ocorreu um erro ao criar a categoria",
+          title: "Erro ao editar categoria",
+          description: "Ocorreu um erro ao editar a categoria",
           type: "error",
         });
         return;
@@ -73,8 +86,8 @@ export default function ModalCreateCategory({
       router.refresh();
     } catch {
       toaster.create({
-        title: "Erro ao criar categoria",
-        description: "Ocorreu um erro ao criar a categoria",
+        title: "Erro ao editar categoria",
+        description: "Ocorreu um erro ao editar a categoria",
         type: "error",
       });
     }
@@ -86,7 +99,7 @@ export default function ModalCreateCategory({
       <Dialog.Positioner>
         <Dialog.Content>
           <Dialog.Header>
-            <Dialog.Title>Nova Categoria</Dialog.Title>
+            <Dialog.Title>Editar Categoria</Dialog.Title>
           </Dialog.Header>
           <Dialog.CloseTrigger />
           <Dialog.Body>
@@ -131,7 +144,7 @@ export default function ModalCreateCategory({
               loading={isSubmitting}
               colorPalette="blue"
             >
-              Adicionar
+              Editar
             </Button>
           </Dialog.Footer>
         </Dialog.Content>

@@ -34,7 +34,7 @@ export default function RootLayout({
         <Provider>
           <Flex direction="column" minH="100vh" bg="bg" color="fg">
             <Navbar />
-            <Container as="main" maxW="100%" px={0} py={8} flex={1}>
+            <Container as="main" maxW="100%" px={0} py={4} flex={1}>
               {children}
             </Container>
           </Flex>
