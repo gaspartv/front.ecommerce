@@ -1,7 +1,8 @@
 import { Paginate } from "@/components/ui/pagination";
-import { Box, Heading, HStack, Image, Stack, Table } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack, Table } from "@chakra-ui/react";
 import Link from "next/link";
 import { Fragment } from "react/jsx-runtime";
+import ChangeImageCategory from "./change-image-category";
 import ChangeStatusCategory from "./change-status-category";
 import CreateCategory from "./create-category";
 import DeleteCategory from "./delete-category";
@@ -25,6 +26,7 @@ async function getCategories(searchParams: {
   limit?: string;
   order_by?: string;
   order_dir?: string;
+  status?: "all" | "active" | "inactive";
 }) {
   const params = new URLSearchParams();
 
@@ -46,6 +48,10 @@ async function getCategories(searchParams: {
 
   if (searchParams.order_dir) {
     params.set("order_dir", searchParams.order_dir);
+  }
+
+  if (searchParams.status) {
+    params.set("status", searchParams.status);
   }
 
   const url = `${
@@ -70,6 +76,7 @@ export default async function Categorias({
     limit?: string;
     order_by?: string;
     order_dir?: "asc" | "desc";
+    status?: "all" | "active" | "inactive";
   }>;
 }) {
   const params = await searchParams;
@@ -100,7 +107,7 @@ export default async function Categorias({
 
           <Box overflowX="auto" borderWidth="1px" borderRadius="md">
             <Table.Root
-              size={{ base: "xs", sm: "sm" }}
+              size={{ base: "lg", sm: "sm" }}
               variant="outline"
               striped
               overflowX={{ base: "auto", md: "visible" }}
@@ -184,19 +191,17 @@ export default async function Categorias({
                 {data.map((item: CategoryInterface) => (
                   <Table.Row key={item.id}>
                     <Table.Cell minW="48px">
-                      <Image
-                        src={item.image}
-                        boxSize="30px"
-                        borderRadius="full"
-                        fit="cover"
-                        alt={item.name}
-                        cursor="pointer"
-                        transition="transform 0.2s ease-in-out"
-                        _hover={{ transform: "scale(2)" }}
+                      <ChangeImageCategory
+                        categoryId={item.id}
+                        image={item.image}
+                        name={item.name}
                       />
                     </Table.Cell>
                     <Table.Cell minW="80px" textAlign="center">
-                      <ChangeStatusCategory disabled_at={item.disabled_at} />
+                      <ChangeStatusCategory
+                        disabled_at={item.disabled_at}
+                        categoryId={item.id}
+                      />
                     </Table.Cell>
                     <Table.Cell
                       w="15%"

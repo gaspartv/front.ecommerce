@@ -6,8 +6,10 @@ import ModalChangeStatusCategory from "./modal-change-status-category";
 
 export default function ChangeStatusCategory({
   disabled_at,
+  categoryId,
 }: {
   disabled_at: string | null;
+  categoryId: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,6 +23,7 @@ export default function ChangeStatusCategory({
         open={isOpen}
         onOpenChange={onOpenChange}
         disabled_at={disabled_at}
+        categoryId={categoryId}
       />
       <Switch.Root
         checked={disabled_at == null}

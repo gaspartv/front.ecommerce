@@ -2,45 +2,29 @@
 
 import { toaster } from "@/components/ui/toaster";
 import { Button, Dialog, Stack } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const categorySchema = z.object({
-  name: z.string().min(3, "Nome obrigatório"),
-  description: z.string().min(5, "Descrição obrigatória"),
-});
-
-type CategoryFormData = z.infer<typeof categorySchema>;
 
 interface ModalDeleteCategoryProps {
   open: boolean;
   onOpenChange: (details: { open: boolean }) => void;
   disabled_at: string | null;
+  categoryId: string;
 }
 
 export default function ModalChangeStatusCategory({
   open,
   onOpenChange,
   disabled_at,
+  categoryId,
 }: ModalDeleteCategoryProps) {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
-  });
 
   async function onSubmit() {
     try {
       const rest = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "categories/delete" + "idCategory",
+        process.env.NEXT_PUBLIC_API_URL + "categories/disable?id=" + categoryId,
         {
-          method: "DELETE",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -56,19 +40,24 @@ export default function ModalChangeStatusCategory({
         return;
       }
 
+      const data = await rest.json();
+      const status = data.status;
+
       toaster.create({
-        title: "Categoria criada com sucesso",
-        description: "A categoria foi criada com sucesso",
+        title: "Status da categoria alterado com sucesso",
+        description:
+          "Categoria " +
+          (status === "active" ? "ativada" : "desativada") +
+          " com sucesso",
         type: "success",
       });
 
-      reset();
       onOpenChange({ open: false });
       router.refresh();
     } catch {
       toaster.create({
-        title: "Erro ao deletar categoria",
-        description: "Ocorreu um erro ao deletar a categoria",
+        title: "Erro ao alterar status da categoria",
+        description: "Ocorreu um erro ao alterar o status da categoria",
         type: "error",
       });
     }
@@ -102,10 +91,10 @@ export default function ModalChangeStatusCategory({
             <Button
               type="submit"
               form="category-form"
-              loading={isSubmitting}
-              colorPalette="blue"
+              colorPalette={disabled_at == null ? "red" : "blue"}
+              onClick={onSubmit}
             >
-              Alterar
+              {disabled_at == null ? "Desativar" : "Ativar"}
             </Button>
           </Dialog.Footer>
         </Dialog.Content>
