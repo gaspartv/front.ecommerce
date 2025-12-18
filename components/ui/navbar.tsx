@@ -29,6 +29,9 @@ export function Navbar() {
           <Link href="/categorias">
             <Text>Categorias</Text>
           </Link>
+          <Link href="/produtos">
+            <Text>Produtos</Text>
+          </Link>
         </HStack>
 
         <Spacer />

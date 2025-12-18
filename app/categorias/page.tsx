@@ -2,12 +2,12 @@ import { Paginate } from "@/components/ui/pagination";
 import { Box, Heading, HStack, Stack, Table } from "@chakra-ui/react";
 import Link from "next/link";
 import { Fragment } from "react/jsx-runtime";
+import SearchForm from "../../components/ui/search-form";
 import ChangeImageCategory from "./change-image-category";
 import ChangeStatusCategory from "./change-status-category";
 import CreateCategory from "./create-category";
 import DeleteCategory from "./delete-category";
 import EditCategory from "./edit-category";
-import SearchForm from "./search-form";
 
 interface CategoryInterface {
   id: string;
@@ -103,7 +103,7 @@ export default async function Categorias({
             <CreateCategory>Adicionar categoria</CreateCategory>
           </Box>
 
-          <SearchForm />
+          <SearchForm path="categorias" />
 
           <Box overflowX="auto" borderWidth="1px" borderRadius="md">
             <Table.Root

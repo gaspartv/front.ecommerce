@@ -144,15 +144,12 @@ export default function ModalChangeImageCategory({
                   accept="image/*"
                   onChange={handleFileChange}
                   style={{ display: "none" }}
-                  id="image-upload"
                 />
                 <Button
-                  as="label"
-                  htmlFor="image-upload"
                   colorPalette="blue"
                   variant="outline"
                   width="100%"
-                  cursor="pointer"
+                  onClick={() => fileInputRef.current?.click()}
                 >
                   Selecionar Imagem
                 </Button>

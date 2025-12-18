@@ -4,7 +4,7 @@ import { Box, Button, Input, NativeSelect } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
-export default function SearchForm() {
+export default function SearchForm({ path }: { path: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -30,7 +30,7 @@ export default function SearchForm() {
     params.delete("page");
 
     startTransition(() => {
-      router.push(`/categorias?${params.toString()}`);
+      router.push(`/${path}?${params.toString()}`);
     });
   };
 
@@ -55,7 +55,7 @@ export default function SearchForm() {
     params.delete("page");
 
     startTransition(() => {
-      router.push(`/categorias?${params.toString()}`);
+      router.push(`/${path}?${params.toString()}`);
     });
   };
 
@@ -70,7 +70,7 @@ export default function SearchForm() {
         <NativeSelect.Indicator />
       </NativeSelect.Root>
       <Input
-        placeholder="Buscar por categoria"
+        placeholder={`Buscar por ${path}`}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
