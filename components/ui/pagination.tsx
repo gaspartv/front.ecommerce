@@ -13,6 +13,7 @@ import { useTransition } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 interface PaginateProps {
+  path: string;
   total: number;
   pageSize: number;
   page: number;
@@ -28,7 +29,7 @@ export function Paginate(props: PaginateProps) {
     params.set("page", String(newPage));
 
     startTransition(() => {
-      router.push(`/categorias?${params.toString()}`);
+      router.push(`/${props.path}?${params.toString()}`);
     });
   };
 
@@ -38,7 +39,7 @@ export function Paginate(props: PaginateProps) {
     params.delete("page");
 
     startTransition(() => {
-      router.push(`/categorias?${params.toString()}`);
+      router.push(`/${props.path}?${params.toString()}`);
     });
   };
 

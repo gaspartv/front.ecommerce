@@ -276,7 +276,12 @@ export default async function Categorias({
             </Table.Root>
           </Box>
 
-          <Paginate total={total} pageSize={limit} page={page} />
+          <Paginate
+            total={total}
+            pageSize={limit}
+            page={page}
+            path="categorias"
+          />
         </Stack>
       </Box>
     </Fragment>
